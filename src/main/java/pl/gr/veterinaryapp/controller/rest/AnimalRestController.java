@@ -22,7 +22,7 @@ public class AnimalRestController {
     private final AnimalService animalService;
 
     @GetMapping("/{id}")
-    public Animal getAnimal(@PathVariable long id) {
+    public Animal getAnimalById(@PathVariable long id) {
         return animalService.getAnimalById(id);
     }
 
@@ -32,7 +32,7 @@ public class AnimalRestController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable long id) {
+    public void deleteById(@PathVariable long id) {
         animalService.deleteAnimal(id);
     }
 
