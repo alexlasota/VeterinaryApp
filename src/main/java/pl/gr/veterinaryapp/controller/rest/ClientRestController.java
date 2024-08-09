@@ -24,7 +24,7 @@ public class ClientRestController {
     private final ClientMapper mapper;
 
     @GetMapping("/{id}")
-    public ClientResponseDto getClient(@PathVariable long id) {
+    public ClientResponseDto getClientById(@PathVariable long id) {
         return mapper.map(clientService.getClientById(id));
     }
 
@@ -34,7 +34,7 @@ public class ClientRestController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable long id) {
+    public void deleteById(@PathVariable long id) {
         clientService.deleteClient(id);
     }
 

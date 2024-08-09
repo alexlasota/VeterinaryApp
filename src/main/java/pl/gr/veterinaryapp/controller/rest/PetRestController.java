@@ -36,7 +36,7 @@ public class PetRestController {
     }
 
     @GetMapping(path = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
-    public PetResponseDto getPet(@AuthenticationPrincipal User user, @PathVariable long id) {
+    public PetResponseDto getPetById(@AuthenticationPrincipal User user, @PathVariable long id) {
         var pet = mapper.map(petService.getPetById(user, id));
         addLinks(pet);
         return pet;

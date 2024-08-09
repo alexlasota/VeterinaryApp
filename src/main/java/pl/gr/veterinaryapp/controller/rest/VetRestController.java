@@ -22,7 +22,7 @@ public class VetRestController {
     private final VetService vetService;
 
     @GetMapping("/{id}")
-    public Vet getVet(@PathVariable long id) {
+    public Vet getVetById(@PathVariable long id) {
         return vetService.getVetById(id);
     }
 
@@ -37,7 +37,7 @@ public class VetRestController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable long id) {
+    public void deleteById(@PathVariable long id) {
         vetService.deleteVet(id);
     }
 }
