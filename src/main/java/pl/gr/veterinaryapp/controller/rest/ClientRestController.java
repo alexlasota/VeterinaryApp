@@ -24,7 +24,7 @@ public class ClientRestController {
     private final ClientMapper mapper;
 
     @GetMapping("/{id}")
-    public ClientResponseDto getClient(@PathVariable long id) {
+    public ClientResponseDto getClientById(@PathVariable long id) {
         return mapper.map(clientService.getClientById(id));
     }
 

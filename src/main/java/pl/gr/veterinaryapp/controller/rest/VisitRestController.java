@@ -46,7 +46,7 @@ public class VisitRestController {
     }
 
     @GetMapping(path = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
-    public VisitResponseDto getVisit(@AuthenticationPrincipal User user, @PathVariable long id) {
+    public VisitResponseDto getVisitById(@AuthenticationPrincipal User user, @PathVariable long id) {
         var visit = mapper.map(visitService.getVisitById(user, id));
         addLinks(visit);
         return visit;
@@ -84,7 +84,7 @@ public class VisitRestController {
 
         for (var visit : visits) {
             addLinks(visit);
-            var link = linkTo(methodOn(VisitRestController.class).getVisit(user, visit.getId()))
+            var link = linkTo(methodOn(VisitRestController.class).getVisitById(user, visit.getId()))
                     .withSelfRel();
             visit.add(link);
         }

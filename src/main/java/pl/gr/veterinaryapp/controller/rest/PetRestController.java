@@ -66,12 +66,12 @@ public class PetRestController {
     }
 
     public Link createClientLink(long id) {
-        return linkTo(methodOn(ClientRestController.class).getClient(id))
+        return linkTo(methodOn(ClientRestController.class).getClientById(id))
                 .withRel("client");
     }
 
     public Link createAnimalLink(long id) {
-        return linkTo(methodOn(AnimalRestController.class).getAnimal(id))
+        return linkTo(methodOn(AnimalRestController.class).getAnimalById(id))
                 .withRel("animal");
     }
 

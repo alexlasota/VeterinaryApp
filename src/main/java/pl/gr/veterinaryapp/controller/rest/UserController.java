@@ -33,12 +33,12 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable long id) {
+    public void deleteUserById(@PathVariable long id) {
         userService.deleteUser(id);
     }
 
     @GetMapping("/{id}")
-    public UserDto getUser(@PathVariable long id) {
+    public UserDto getUserById(@PathVariable long id) {
         return mapper.map(userService.getUser(id));
     }
 }

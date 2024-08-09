@@ -22,10 +22,10 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 public class VisitResponseDto extends RepresentationModel<VisitResponseDto> {
 
-    private long id;
-    private long vetId;
-    private long petId;
-    private long treatmentRoomId;
+    private Long id;
+    private Long vetId;
+    private Long petId;
+    private Long treatmentRoomId;
     private OffsetDateTime startDateTime;
     private Duration duration;
     private BigDecimal price;
