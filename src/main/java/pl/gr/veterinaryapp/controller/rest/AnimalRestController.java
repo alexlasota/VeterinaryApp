@@ -22,7 +22,7 @@ public class AnimalRestController {
     private final AnimalService animalService;
 
     @GetMapping("/{id}")
-    public Animal getAnimalById(@PathVariable long id) {
+    public AnimalRequestDto getAnimalById(@PathVariable long id) {
         return animalService.getAnimalById(id);
     }
 
@@ -37,7 +37,7 @@ public class AnimalRestController {
     }
 
     @GetMapping
-    public List<Animal> getAllAnimals() {
+    public List<AnimalRequestDto> getAllAnimals() {
         return animalService.getAllAnimals();
     }
 }

@@ -9,4 +9,6 @@ import pl.gr.veterinaryapp.model.entity.Animal;
 public interface AnimalMapper {
 
     Animal map(AnimalRequestDto animalRequestDto);
+
+    AnimalRequestDto toDto(Animal animal);
 }
