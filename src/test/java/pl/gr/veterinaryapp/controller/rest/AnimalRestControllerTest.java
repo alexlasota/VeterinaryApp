@@ -77,7 +77,6 @@ class AnimalRestControllerTest {
         animal.setSpecies(SPECIES);
         animal.setId(ID);
 
-        when(animalService.getAnimalById(anyLong())).thenReturn(animal);
 
         mockMvc.perform(get("/api/animals/{id}", ID)
                 .content(objectMapper.writeValueAsString(animal))
@@ -86,7 +85,7 @@ class AnimalRestControllerTest {
                 .andExpect(jsonPath("$.id").value(ID))
                 .andExpect(jsonPath("$.species").value(SPECIES));
 
-        verify(animalService).getAnimalById(1);
+        verify(animalService).getAnimalById(1L);
     }
 
     @Test
@@ -95,7 +94,6 @@ class AnimalRestControllerTest {
         List<Animal> animals = List.of(createNewAnimal("CAT"),
                 createNewAnimal("DOG"));
 
-        when(animalService.getAllAnimals()).thenReturn(animals);
 
         mockMvc.perform(get("/api/animals", ID)
                 .contentType(MediaType.APPLICATION_JSON))

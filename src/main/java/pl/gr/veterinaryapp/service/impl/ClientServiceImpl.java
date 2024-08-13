@@ -1,6 +1,7 @@
 package pl.gr.veterinaryapp.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.gr.veterinaryapp.exception.IncorrectDataException;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
@@ -27,7 +29,10 @@ public class ClientServiceImpl implements ClientService {
     public Client getClientById(long id) {
         System.out.println("XXX");
         return clientRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Wrong id."));
+                .orElseThrow(() -> {
+                    log.error("Client with ID: {} not found.", id);
+                    return new ResourceNotFoundException("Wrong id.");
+                });
     }
 
     @Override
@@ -39,6 +44,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client createClient(ClientRequestDto clientRequestDTO) {
         if (clientRequestDTO.getSurname() == null || clientRequestDTO.getName() == null) {
+            log.error("Client creation failed: Name or Surname is null.");
             throw new IncorrectDataException("Name and Surname should not be null.");
         }
 
@@ -48,7 +54,10 @@ public class ClientServiceImpl implements ClientService {
         Client client = mapper.map(clientRequestDTO);
         client.setUser(user);
 
-        return clientRepository.save(client);
+        Client savedClient = clientRepository.save(client);
+        log.info("Client created successfully with ID: {}", savedClient.getId());
+
+        return savedClient;
     }
 
     @Transactional
@@ -57,5 +66,6 @@ public class ClientServiceImpl implements ClientService {
         Client result = clientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Wrong id."));
         clientRepository.delete(result);
+        log.info("Client with ID: {} deleted successfully.", id);
     }
 }

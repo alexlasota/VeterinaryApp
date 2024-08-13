@@ -1,6 +1,7 @@
 package pl.gr.veterinaryapp.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -30,7 +32,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public VetAppUser getUser(long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Wrong id."));
+                .orElseThrow(() -> {
+                    log.error("User with ID: {} not found.", id);
+                    return new ResourceNotFoundException("Wrong id.");
+                });
     }
 
     @Override
@@ -44,7 +49,11 @@ public class UserServiceImpl implements UserService {
         newVetAppUser.setUsername(user.getUsername());
         newVetAppUser.setPassword(encoder.encode(user.getPassword()));
         newVetAppUser.setRole(new Role(user.getRole()));
-        return userRepository.save(newVetAppUser);
+
+        VetAppUser savedUser = userRepository.save(newVetAppUser);
+        log.info("User created successfully with ID: {} and username: {}", savedUser.getId(), savedUser.getUsername());
+
+        return savedUser;
     }
 
     @Override
@@ -53,5 +62,6 @@ public class UserServiceImpl implements UserService {
         var user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("Wrong id."));
         userRepository.delete(user);
+        log.info("User with ID: {} deleted successfully.", id);
     }
 }

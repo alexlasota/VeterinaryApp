@@ -1,6 +1,7 @@
 package pl.gr.veterinaryapp.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class PetServiceImpl implements PetService {
 
     private final PetRepository petRepository;
@@ -41,6 +43,7 @@ public class PetServiceImpl implements PetService {
                 .orElseThrow(() -> new ResourceNotFoundException("Wrong id."));
 
         if (!isUserAuthorized(user, pet.getClient())) {
+            log.error("User: {} is not authorized to access pet with ID: {}", user.getUsername(), id);
             throw new ResourceNotFoundException("Wrong id.");
         }
 
@@ -73,7 +76,10 @@ public class PetServiceImpl implements PetService {
         newPet.setAnimal(animal);
         newPet.setClient(client);
 
-        return petRepository.save(newPet);
+        Pet savedPet = petRepository.save(newPet);
+        log.info("Pet created successfully with ID: {} for user: {}", savedPet.getId(), user.getUsername());
+
+        return savedPet;
     }
 
     @Transactional
@@ -82,6 +88,7 @@ public class PetServiceImpl implements PetService {
         Pet result = petRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Wrong id."));
         petRepository.delete(result);
+        log.info("Pet with ID: {} deleted successfully.", id);
     }
 
     private boolean isUserAuthorized(User user, Client client) {

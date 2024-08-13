@@ -1,6 +1,7 @@
 package pl.gr.veterinaryapp.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -35,6 +36,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class VisitServiceImpl implements VisitService {
 
     private static final int MINIMAL_TIME_TO_VISIT = 60;
@@ -53,7 +55,7 @@ public class VisitServiceImpl implements VisitService {
         if (!isUserAuthorized(user, visit.getPet().getClient())) {
             throw new ResourceNotFoundException("Wrong id.");
         }
-
+        log.info("Visit with ID: {} retrieved successfully.", id);
         return visit;
     }
 

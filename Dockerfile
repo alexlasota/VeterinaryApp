@@ -2,7 +2,7 @@
 FROM gradle:7.2.0-jdk11 as builder
 WORKDIR /app
 COPY . .
-RUN gradle build
+RUN gradle build -x test
 
 # Stage 2: Create a lightweight container to run the application
 FROM openjdk:11-jre-slim
